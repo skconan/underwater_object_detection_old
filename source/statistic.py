@@ -49,6 +49,10 @@ class Statistic():
         data = self.convert_to_np(data)
         return np.quantile(data, q/4.)
 
+    def get_percentile(self, data, q):
+        data = self.convert_to_np(data)
+        return np.percentile(data, q)
+
     def get_skewness(self, data):
         data = self.convert_to_oneD(data)
         min = self.get_min(data)
@@ -57,13 +61,15 @@ class Statistic():
         mode = self.get_mode(data)
         mean = self.get_mean(data)
         median = self.get_median(data)
-        print(mode, median, mean, std, max, min, max - min)
-        if mode - mean > 5:
+        print("MODE:",mode, "MED:",median, "MEAN:",mean, std, max, min, max - min)
+        if mean < median < mode:
             return "Negative direction"
-        elif mean - mode > 5:
+        elif mode < median < mean:
             return "Positive direction"
-        else:
+        elif mode == median == mean:
             return "No skew"
+        else:
+            return "Don't know"
 
 
 if __name__ == '__main__':
