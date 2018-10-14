@@ -16,12 +16,12 @@ from fourier_transform import FourierTransform
 
 
 def gate():
-    cap = cv.VideoCapture(CONST.PATH_VDO + r'\pool_gate_12.mp4')
-    min_gray = 80
-    max_gray = 240
-    ref = np.zeros((100, 100), np.uint8)
-    ref[0:50, :] = min_gray
-    ref[50:, :] = max_gray
+    cap = cv.VideoCapture(CONST.PATH_VDO + r'\pool_gate_05.mp4')
+    min_gray = 120
+    max_gray = 230
+    ref = np.zeros((200, 200), np.uint8)
+    ref[0:100, :] = min_gray
+    ref[100:, :] = max_gray
     cv.imshow('ref', ref)
     while cap.isOpened():
         _, bgr = cap.read()
@@ -56,7 +56,12 @@ def gate():
         k = cv.waitKey(1) & 0xff
         if k == ord('q'):
             break
-
+        histr = cv.calcHist([sub], [0], None, [256], [0, 256])
+        plt.plot(histr, color='red')
+ 
+        plt.pause(0.0001)
+        plt.clf()
+    plt.close()
     cap.release()
     cv.destroyAllWindows()
 
