@@ -31,4 +31,6 @@ class FourierTransform:
 
     def get_log_scale(self, image_fft2):
         magnitude = self.get_magnitude(image_fft2)
-        return np.log(1+magnitude)
+        logz = np.log(1+magnitude)
+        logz = np.uint8((logz - logz.min())*255/(logz.max()-logz.min()))
+        return logz
