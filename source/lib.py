@@ -20,3 +20,6 @@ def get_kernel(shape='rect', ksize=(5, 5)):
         return cv.getStructuringElement(cv.MORPH_CROSS, ksize)
     else:
         return None
+
+def normalize(gray):
+    return np.uint8(255 * (gray - gray.min()) / (gray.max() - gray.min()))
