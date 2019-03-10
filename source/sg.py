@@ -49,12 +49,17 @@ def neg_bg_subtraction():
     contours, _ =  cv.findContours(mask_hsv.copy(),cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
     for cnt in contours:
         x,y,w,h = np.int0(cv.boundingRect(cnt))
-        
         if w < 10 or h < 10:
             continue
-        cv.rectangle(bgr,(x,y),(x+w,y+h),(0,0,255),2)
+        (x,y),r = cv.minEnclosingCircle(cnt)
+        area_cir = 3.14*r*r
+        area_cnt = cv.contourArea(cnt)
+        if area_cir / area_cnt > 1.25:
+            continue
+        cv.circle(bgr, (int(x), int(y)), int(r), (255,0,255),4)
+        # cv.rectangle(bgr,(x,y),(x+w,y+h),(0,0,255),2)
         mask_obj = np.zeros(gray.shape,np.uint8)
-        cv.rectangle(mask_obj,(x,y),(x+w,y+h),(255),-1)
+        # cv.rectangle(mask_obj,(x,y),(x+w,y+h),(255),-1)
         # cv.imshow('mask',mask_obj.copy())
         mask_obj = cv.bitwise_and(mask.copy(),mask_obj.copy())
         # cv.imshow('mask_obj',mask_obj.copy())
